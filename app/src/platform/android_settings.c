@@ -185,6 +185,10 @@ static const setting_desc GLOBAL_FIELDS[] = {
      0, 1, NULL, OWNER_SETTINGS, SETTINGS_FIELD(laser_color)},
     {"general.laser_thickness", "general.bot", "Laser thickness", "",
      SETTING_INT, 1, 4, NULL, OWNER_SETTINGS, SETTINGS_FIELD(laser_thickness)},
+    {"trainer.ai_mode", "general.bot", "AI mode",
+     "Choose the classic bot or Wyrm local AI trainer.",
+     SETTING_ENUM, 0, 1, "Classic bot|Treinador IA", OWNER_SETTINGS,
+     SETTINGS_FIELD(ext.trainer_ai_mode)},
     {"general.bot_circle", "general.bot", "Circle after score",
      "Below this score the bot hunts for food. From this score on it coils "
      "round itself to guard its length and closes the coil on any snake "
