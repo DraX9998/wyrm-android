@@ -211,6 +211,7 @@ void user_settings_ext_default(user_settings_ext* x) {
   x->rain_opacity = 0.90f;
   x->keys_white_v1 = true;
   x->keys_grey_fill_v1 = true;
+  x->trainer_ai_mode = 1;
   for (int i = 0; i < 20; ++i) x->key_fill[i] = 9;
 #ifdef WYRM_DESKTOP
   x->eyes_back_key = GLFW_KEY_E;
@@ -397,6 +398,14 @@ bool user_settings_ext_fix(user_settings* settings, size_t bytes_read) {
     size_t sens_at = offsetof(user_settings_ext, arrow_sens);
     fixed |= ext_take_float(&ext->arrow_sens, written >= sens_at + 4, 0.0f,
                             1.0f, 0.0f);
+  }
+  {
+    size_t trainer_at = offsetof(user_settings_ext, trainer_ai_mode);
+    if (written < trainer_at + sizeof(x->trainer_ai_mode) ||
+        (x->trainer_ai_mode != 0 && x->trainer_ai_mode != 1)) {
+      x->trainer_ai_mode = 1;
+      fixed = 1;
+    }
   }
   /* A longer tail belongs to a newer build. Do not shrink it just to rewrite
      the size we already understood. A shorter one is missing fields, so save. */
