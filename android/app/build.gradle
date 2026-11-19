@@ -2,7 +2,13 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.compose'
-    id 'com.google.gms.google-services'
+}
+
+// The fork can build a standalone test APK without the owner's private
+// Firebase configuration. Firebase integrations are enabled when the user
+// supplies their own google-services.json.
+if (file('google-services.json').exists()) {
+    apply plugin: 'com.google.gms.google-services'
 }
 
 def wyrmVersionCode = (project.findProperty('WYRM_VERSION_CODE') ?: '1').toInteger()
