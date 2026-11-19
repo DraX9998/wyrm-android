@@ -53,6 +53,11 @@ static void mobile_hotkeys_default(mobile_hotkey_settings* settings) {
 
 static bool normalize_on_screen_buttons(user_settings* settings) {
   bool changed = false;
+  /* Keep a dedicated in-game Treinador IA toggle visible by default. */
+  if (!settings->mobile_hotkeys.visible[HOTKEY_BOT]) {
+    settings->mobile_hotkeys.visible[HOTKEY_BOT] = true;
+    changed = true;
+  }
   if (settings->mobile_hotkeys.label_mode != MOBILE_HOTKEY_LABEL_FUNCTION) {
     settings->mobile_hotkeys.label_mode = MOBILE_HOTKEY_LABEL_FUNCTION;
     changed = true;
