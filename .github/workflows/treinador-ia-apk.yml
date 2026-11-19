@@ -1,4 +1,5 @@
 name: Build Wyrm AI Trainer APK
+# Rebuild latest trainer selector and in-game toggle changes.
 
 on:
   workflow_dispatch:
