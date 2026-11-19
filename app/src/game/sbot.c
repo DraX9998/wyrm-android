@@ -1,4 +1,5 @@
 #include "sbot.h"
+#include "trainer_ai.h"
 
 #include <SDL3/SDL.h>
 #include <math.h>
@@ -923,10 +924,11 @@ static void think(game_data* gdata, int follow_circle) {
   else if (B.state != BOT_CIRCLE)
     to_circle(gdata);
 
+  bool immediate_danger = false;
   if (B.state == BOT_CIRCLE) {
     B.boost = false;
     coil(gdata);
-  } else if (dodge(gdata) || surrounded(gdata)) {
+  } else if ((immediate_danger = dodge(gdata) || surrounded(gdata))) {
     if (B.action_at) B.action_at = now + NTL_DANGER_MS;
   } else {
     if (B.len_score > follow_circle) B.state = BOT_TOCIRCLE;
@@ -939,6 +941,19 @@ static void think(game_data* gdata, int follow_circle) {
       pick_food(gdata);
     else if (B.state == BOT_TOCIRCLE)
       to_circle(gdata);
+  }
+
+  /*
+   * The original bot still handles immediate dodges and the coil. In open
+   * growth mode, the new offline trainer scores nearby corridors and refines
+   * the target. The ring guard remains last and can override any suggestion.
+   */
+  if (!immediate_danger && B.state == BOT_GROW) {
+    double trained_x = B.goal.x;
+    double trained_y = B.goal.y;
+    trainer_ai_adjust_goal(gdata, B.id, B.goal.x, B.goal.y,
+                           &trained_x, &trained_y);
+    B.goal = (v2){js_round(trained_x), js_round(trained_y)};
   }
   ring_steer(gdata);
 }
