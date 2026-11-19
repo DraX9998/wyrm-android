@@ -1,4 +1,5 @@
 #include "sbot.h"
+#include "trainer_ai.h"
 
 #include <SDL3/SDL.h>
 #include <math.h>
@@ -910,6 +911,14 @@ void sbot_go(tenv* env) {
   if (tdarray_length(gdata->data.snakes) == 0) return;
   B.de = usrs->bot_radius_mult;
   think(gdata, usrs->bot_follow_circle_score);
+  if (B.state == BOT_GROW) {
+    double trained_x = B.goal.x;
+    double trained_y = B.goal.y;
+    trainer_ai_adjust_goal(gdata, B.id, B.goal.x, B.goal.y,
+                           &trained_x, &trained_y);
+    B.goal.x = js_round(trained_x);
+    B.goal.y = js_round(trained_y);
+  }
   bot->output.accel = B.boost;
   /* dA.Y: the aim, from the head, in screen units. */
   bot->output.xm = (float)((B.goal.x - B.hx) * gdata->data.gsc);
