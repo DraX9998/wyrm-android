@@ -17,12 +17,6 @@ static double trainer_dist2(double ax, double ay, double bx, double by) {
   return dx * dx + dy * dy;
 }
 
-static double trainer_wrap_angle(double angle) {
-  while (angle > TRAINER_PI) angle -= 2.0 * TRAINER_PI;
-  while (angle < -TRAINER_PI) angle += 2.0 * TRAINER_PI;
-  return angle;
-}
-
 static double trainer_clearance_penalty(double clearance) {
   if (clearance < 45.0) return 1800.0;
   if (clearance < 90.0) return 650.0;
