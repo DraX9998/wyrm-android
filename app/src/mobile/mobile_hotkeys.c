@@ -13,7 +13,7 @@
 #endif
 
 static const char* ACTION_NAMES[NUM_MOBILE_ACTIONS] = {
-    "HUD",         "Show names", "Big food",   "Assist",     "Bot",
+    "HUD",         "Show names", "Big food",   "Assist",     "Treinador IA",
     "Hotkey menu", "Restart",    "Quit",       "Zoom in",    "Zoom out",
     "Boost",       "Turn left",  "Turn right", "Fullscreen", "Auto restart",
     "Eyes back",   "Rain"};
