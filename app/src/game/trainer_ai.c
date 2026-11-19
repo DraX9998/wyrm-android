@@ -119,8 +119,10 @@ void trainer_ai_adjust_goal(game_data* gdata, int player_id,
         if (along < 80.0 || along > 720.0) continue;
         double lateral = fabs(-(bx - me->xx) * sa + (by - me->yy) * ca);
         if (lateral > 230.0) continue;
-        double clearance = sqrt(along * along + lateral * lateral) -
-                           own_width - other_width;
+        /* For a body segment ahead on this corridor, lateral distance
+           is the clearance that matters; along-distance only gates the
+           look-ahead window above. */
+        double clearance = lateral - (own_width + other_width) * 0.5;
         score -= trainer_clearance_penalty(clearance) * 0.85;
       }
     }
@@ -137,7 +139,7 @@ void trainer_ai_adjust_goal(game_data* gdata, int player_id,
       if (along < 120.0 || along > 680.0) continue;
       double lateral = fabs(-(bx - me->xx) * sa + (by - me->yy) * ca);
       if (lateral > 170.0) continue;
-      score -= trainer_clearance_penalty(lateral - own_width) * 1.2;
+      score -= trainer_clearance_penalty(lateral - own_width * 0.5) * 1.2;
     }
 
     /* Food is useful only when it lies ahead and close to this corridor. */
