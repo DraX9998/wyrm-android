@@ -350,9 +350,7 @@ class WyrmOverlay(private val activity: Activity) :
     }
 
     /** Which Compose screen the engine says we are on. */
-    private var route by mutableStateOf(
-        if (repository.hasSession) Route.HOME else Route.AUTH
-    )
+    private var route by mutableStateOf(Route.HOME)
     private var skinTables by mutableStateOf(SkinTables())
     private var skinState by mutableStateOf(SkinState())
 
@@ -589,7 +587,7 @@ class WyrmOverlay(private val activity: Activity) :
     private var arenaBackground by mutableStateOf(0)
     /** Earned during a run, held until Home can give each one its own impact. */
     private var lastBackupReceiptStatus = 0
-    private var sessionReady = repository.hasSession && profile.id.isNotBlank()
+    private var sessionReady = true // Local play does not require an online account.
     private var activityResumed = false
     private var pendingNotificationOpen: NotificationOpen? = null
     private var gameModeEligible = false
@@ -5152,7 +5150,7 @@ class WyrmOverlay(private val activity: Activity) :
             // Share run leaves the lobby first; the engine then reports its
             // title screen, which means Home everywhere else but not here.
             if (next == Route.HOME && route == Route.TRAIL_SHARE) return@runOnUiThread
-            route = if (next == Route.HOME && !repository.hasSession) Route.AUTH else next
+            route = next
             if (route == Route.LOBBY) watchLobbyArena()
             else lobbyJob?.cancel()
             if (route == Route.PROFILE) refreshProfile()
@@ -6269,7 +6267,8 @@ class WyrmOverlay(private val activity: Activity) :
 
     private fun refreshProfile(force: Boolean = false) {
         if (!repository.hasSession) {
-            route = Route.AUTH
+            // Account services are optional; keep local gameplay available.
+            route = Route.HOME
             return
         }
         val cached = socialCache.profile()
@@ -7003,7 +7002,7 @@ class WyrmOverlay(private val activity: Activity) :
         com.wyrm.omrajput.data.DropWatch.dismissPrompt()
         viewedPlayer = null
         photoError = ""
-        route = Route.AUTH
+        route = Route.HOME
     }
 
     private fun openLeaderboard() {
