@@ -1,0 +1,66 @@
+name: Build Wyrm AI Trainer APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/treinador-ia-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout AI Trainer branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/treinador-ia-do-zero
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build tools
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;28.2.13676358" "cmake;3.22.1"
+
+      - name: Install Slang shader compiler
+        run: |
+          curl -L --fail --retry 3 \
+            https://github.com/shader-slang/slang/releases/download/v2026.22/slang-2026.22-linux-x86_64.tar.gz \
+            -o "$RUNNER_TEMP/slang.tar.gz"
+          mkdir -p "$RUNNER_TEMP/slang"
+          tar -xzf "$RUNNER_TEMP/slang.tar.gz" -C "$RUNNER_TEMP/slang"
+          SLANGC="$(find "$RUNNER_TEMP/slang" -type f -name slangc -print -quit)"
+          test -n "$SLANGC"
+          echo "$(dirname "$SLANGC")" >> "$GITHUB_PATH"
+
+      - name: Compile Vulkan shaders
+        run: python3 build.py 2
+
+      - name: Build debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :app:assembleDebug \
+            -PWYRM_VERSION_CODE=908 \
+            -PWYRM_VERSION_NAME=9.0.8
+
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wyrm-AI-Trainer-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
