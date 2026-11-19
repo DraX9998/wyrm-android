@@ -32,7 +32,7 @@ fun SettingsBotScreen(
     val rows = listOfNotNull(circle, radius)
 
     SettingsDrillScaffold(
-        title = "Bot",
+        title = "Treinador IA",
         insetTop = insetTop,
         insetBottom = insetBottom,
         onBack = onBack,
@@ -42,14 +42,14 @@ fun SettingsBotScreen(
         SettingsCard {
             Column(modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 15.dp, bottom = 15.dp)) {
                 Text(
-                    text = "Let the bot play",
+                    text = "Treinador IA local",
                     fontFamily = Wyrm.Body,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     color = Wyrm.Ink,
                 )
                 Text(
-                    text = "Turn it on with the Bot button in a match. It eats, dodges snakes, breaks away with boost when it is surrounded, and coils round itself once it is big.",
+                    text = "O treinador analisa rotas próximas, procura comida e evita cobras, o próprio corpo e as bordas. Funciona localmente, sem conta ou chave de IA.",
                     fontFamily = Wyrm.Body,
                     fontSize = 12.5.sp,
                     color = Wyrm.Quiet,
@@ -58,7 +58,7 @@ fun SettingsBotScreen(
             }
         }
 
-        SettingsSectionLabel("Basic · behaviour")
+        SettingsSectionLabel("Comportamento do treinador")
         SettingsCard {
             rows.forEachIndexed { index, setting ->
                 SettingTypedRow(setting = setting, first = index == 0, onChange = onChange)
