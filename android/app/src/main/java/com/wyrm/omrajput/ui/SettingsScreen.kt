@@ -169,7 +169,7 @@ fun SettingsScreen(
             "Playing help",
             listOf(
                 SettingsHubRow("Modes", "Normal, Assist, helper lines and arena colours", "", onOpenAssist),
-                SettingsHubRow("Bot", "When it circles, how wide it swings", "", onOpenBot),
+                SettingsHubRow("Treinador IA", "Rotas, comida e prevenção de colisões", "", onOpenBot),
             ),
         ),
         SettingsHubGroup(
