@@ -190,6 +190,8 @@ typedef struct user_settings_ext {
   /* Arrow sensitivity 0..1 (OM, 2026-10-18): 0 = the original 1x. Append
      only. */
   float arrow_sens;
+  /* 0 = classic bot, 1 = Wyrm's local AI trainer. */
+  int32_t trainer_ai_mode;
 } user_settings_ext;
 
 typedef struct user_settings {
