@@ -216,7 +216,7 @@ void user_settings_ext_default(user_settings_ext* x) {
   x->rain_opacity = 0.90f;
   x->keys_white_v1 = true;
   x->keys_grey_fill_v1 = true;
-  ext->trainer_ai_mode = 1;
+  x->trainer_ai_mode = 1;
   for (int i = 0; i < 20; ++i) x->key_fill[i] = 9;
 #ifdef WYRM_DESKTOP
   x->eyes_back_key = GLFW_KEY_E;
