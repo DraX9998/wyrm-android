@@ -911,7 +911,7 @@ void sbot_go(tenv* env) {
   if (tdarray_length(gdata->data.snakes) == 0) return;
   B.de = usrs->bot_radius_mult;
   think(gdata, usrs->bot_follow_circle_score);
-  if (B.state == BOT_GROW) {
+  if (B.state == BOT_GROW && usrs->ext.trainer_ai_mode == 1) {
     double trained_x = B.goal.x;
     double trained_y = B.goal.y;
     trainer_ai_adjust_goal(gdata, B.id, B.goal.x, B.goal.y,
