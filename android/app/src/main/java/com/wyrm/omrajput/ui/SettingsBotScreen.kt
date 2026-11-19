@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.wyrm.omrajput.data.Setting
 
 /**
- * Spec page 13 — Settings › Bot.
+ * Spec page 13 — Settings › AI Trainer.
  *
  * The bot is an on-screen button. This page is circle score and radius — the
  * two engine fields. Laser moved to Assist. No invented boost/restart toggles.
@@ -34,7 +34,7 @@ fun SettingsBotScreen(
     val rows = listOfNotNull(circle, radius)
 
     SettingsDrillScaffold(
-        title = "Bot",
+        title = "Treinador IA",
         insetTop = insetTop,
         insetBottom = insetBottom,
         onBack = onBack,
@@ -44,14 +44,14 @@ fun SettingsBotScreen(
         SettingsCard {
             Column(modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 15.dp, bottom = 15.dp)) {
                 Text(
-                    text = "Let the bot play",
+                    text = "Treinador IA local",
                     fontFamily = Wyrm.Body,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     color = wyrmScopedPalette.ink,
                 )
                 Text(
-                    text = "Turn it on with the Bot button in a match. It eats, dodges snakes, breaks away with boost when it is surrounded, and coils round itself once it is big.",
+                    text = "Ative o Bot durante uma partida. O treinador avalia rotas, comida, cobras próximas e a borda da arena para ajustar a direção. O bot original continua responsável pelas esquivas imediatas e pelo modo de círculo.",
                     fontFamily = Wyrm.Body,
                     fontSize = 12.5.sp,
                     color = wyrmScopedPalette.quiet,
@@ -60,12 +60,12 @@ fun SettingsBotScreen(
             }
         }
 
-        SettingsSectionLabel("Basic · behaviour")
+        SettingsSectionLabel("Comportamento do bot")
         SettingsCard {
             rows.forEachIndexed { index, setting ->
                 SettingTypedRow(setting = setting, first = index == 0, onChange = onChange)
             }
         }
-        SettingsCaption("Laser and helper drawing moved to Assist, where you can actually see them.")
+        SettingsCaption("Treinador offline: não exige conta de IA, chave de API ou conexão com serviços externos.")
     }
 }
