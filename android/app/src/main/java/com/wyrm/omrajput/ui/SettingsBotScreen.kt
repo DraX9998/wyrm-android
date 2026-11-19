@@ -42,7 +42,16 @@ fun SettingsBotScreen(
     val mode = settings.named("trainer.ai_mode")
     val circle = settings.named("general.bot_circle")
     val radius = settings.named("general.bot_radius")
-    val rows = listOfNotNull(mode, circle, radius)
+    // The engine snapshot can briefly arrive with an empty enum option list
+    // while settings are being initialized. LiquidSegmented requires at
+    // least two entries, so normalize this screen's enum before composition.
+    val rows = listOfNotNull(mode, circle, radius).map { setting ->
+        if (setting.type == com.wyrm.omrajput.data.SettingType.ENUM && setting.options.size < 2) {
+            setting.copy(options = listOf("Bot clássico", "Treinador IA"))
+        } else {
+            setting
+        }
+    }
     var backupMessage by remember { mutableStateOf("O backup guarda as configurações do treinador neste dispositivo.") }
 
     val exportBackup = rememberLauncherForActivityResult(
