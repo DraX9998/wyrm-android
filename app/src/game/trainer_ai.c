@@ -109,7 +109,8 @@ void trainer_ai_adjust_goal(game_data* gdata, int player_id,
       }
 
       int body_count = tdarray_length(other->pts);
-      for (int pi = 0; pi < body_count; pi += 4) {
+      int body_step = body_count > 320 ? (body_count + 319) / 320 : 1;
+      for (int pi = 0; pi < body_count; pi += body_step) {
         body_part* part = other->pts + pi;
         if (part->dying) continue;
         double bx = part->xx + part->fx;
@@ -126,7 +127,8 @@ void trainer_ai_adjust_goal(game_data* gdata, int player_id,
 
     /* Own body: reject a route that curls back across the player's tail. */
     int own_count = tdarray_length(me->pts);
-    for (int pi = 0; pi < own_count; pi += 3) {
+    int own_step = own_count > 320 ? (own_count + 319) / 320 : 1;
+    for (int pi = 0; pi < own_count; pi += own_step) {
       body_part* part = me->pts + pi;
       if (part->dying) continue;
       double bx = part->xx + part->fx;
