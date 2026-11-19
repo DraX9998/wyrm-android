@@ -39,9 +39,10 @@ fun SettingsBotScreen(
     onChange: (Setting, List<Float>) -> Unit,
 ) {
     val context = LocalContext.current
+    val mode = settings.named("trainer.ai_mode")
     val circle = settings.named("general.bot_circle")
     val radius = settings.named("general.bot_radius")
-    val rows = listOfNotNull(circle, radius)
+    val rows = listOfNotNull(mode, circle, radius)
     var backupMessage by remember { mutableStateOf("O backup guarda as configurações do treinador neste dispositivo.") }
 
     val exportBackup = rememberLauncherForActivityResult(
@@ -132,7 +133,7 @@ fun SettingsBotScreen(
                     color = Wyrm.Ink,
                 )
                 Text(
-                    text = "O treinador analisa rotas próximas, procura comida e evita cobras, o próprio corpo e as bordas. Funciona localmente, sem conta ou chave de IA.",
+                    text = "Escolha entre o Bot clássico e o Treinador IA original do Wyrm. O treinador avalia rotas, procura comida e evita cobras, o próprio corpo e as bordas.",
                     fontFamily = Wyrm.Body,
                     fontSize = 12.5.sp,
                     color = Wyrm.Quiet,
@@ -141,12 +142,14 @@ fun SettingsBotScreen(
             }
         }
 
-        SettingsSectionLabel("Comportamento do treinador")
+        SettingsSectionLabel("Escolher IA")
         SettingsCard {
             rows.forEachIndexed { index, setting ->
                 SettingTypedRow(setting = setting, first = index == 0, onChange = onChange)
             }
         }
+
+        SettingsCaption("Durante a partida, use o botão Treinador IA na tela do jogo para ligar ou desligar o controle automático. O modo escolhido acima define qual IA conduz a cobra.")
 
         SettingsSectionLabel("Backup do Treinador IA")
         SettingsCard {
